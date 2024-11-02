@@ -4,11 +4,16 @@ package core;
  * ゲームループを定義するクラス
  */
 public class GameLoop implements Runnable {
+    private Game game;
     private boolean running;
     private final double updateRate = 1.0D / 60.0D;
     private long nextStatTime;
     private int fps;
     private int ups;
+
+    public GameLoop(Game game) {
+        this.game = game;
+    }
 
     @Override
     public void run() {
@@ -31,6 +36,9 @@ public class GameLoop implements Runnable {
         }
     }
 
+    /**
+     * ステータスを表示する
+     */
     private void printStats() {
         if (System.currentTimeMillis() > nextStatTime) {
             System.out.println(String.format("FPS: %d, UPS: %d", fps, ups));
@@ -39,11 +47,19 @@ public class GameLoop implements Runnable {
         }
     }
 
+    /**
+     * 描画処理
+     */
     private void render() {
+        game.render();
         fps++;
     }
 
+    /**
+     * 更新処理
+     */
     private void update() {
+        game.update();
         ups++;
     }
 }

@@ -1,7 +1,10 @@
 package core;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
@@ -20,7 +23,20 @@ public class Display extends JFrame {
         canvas.setFocusable(false);
         add(canvas);
         pack();
+        canvas.createBufferStrategy(3);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    /**
+     * 描画処理
+     */
+    public void render(Game game) {
+        BufferStrategy bufferStrategy = canvas.getBufferStrategy();
+        Graphics graphics = bufferStrategy.getDrawGraphics();
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        graphics.dispose();
+        bufferStrategy.show();
     }
 }
