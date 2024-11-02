@@ -4,7 +4,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
@@ -27,6 +26,7 @@ public class Display extends JFrame {
         canvas.createBufferStrategy(3);
         setLocationRelativeTo(null);
         setVisible(true);
+        canvas.setBackground(Color.BLACK);
     }
 
     /**
@@ -35,11 +35,12 @@ public class Display extends JFrame {
     public void render(Game game) {
         BufferStrategy bufferStrategy = canvas.getBufferStrategy();
         Graphics graphics = bufferStrategy.getDrawGraphics();
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        Rectangle rectangle = game.getRectangle();
-        graphics.setColor(Color.BLUE);
-        graphics.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        graphics.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        game.getGameObjects().stream().forEach(gameObject -> graphics.drawImage(
+                gameObject.getSprite(),
+                gameObject.getPosition().getX(),
+                gameObject.getPosition().getY(),
+                null));
         graphics.dispose();
         bufferStrategy.show();
     }
